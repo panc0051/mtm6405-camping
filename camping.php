@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 /**********************************************
  * STARTER CODE
  **********************************************/
@@ -73,8 +73,25 @@ function help()
 
 /**
  * createGameData
- * 
+ * Creates the game data array and adds it to the session
+ * - response array
+ * - marshmallows: number of marshmallows
+ * - wood: number 
+ * - fire: boolean
+ * - tent: boolean
  */
+function createGameData()
+{
+  $_SESSION['camping'] = [
+    'response' => [],
+    "marshmallows" => 3,
+    'wood' => 0,
+    'fire' => false,
+    'tent' => false
+  ];
+}
+
+return isset($_SESSION['camping']);
 
 /**
  * tent
@@ -100,3 +117,14 @@ function help()
  * rest
  * 
  */
+
+
+
+if (isset($_POST['command'])) {
+  if (function_exists($_POST['command'])) {
+    //Execute the function AND update the response
+    updateResponse($_POST['command']());
+  } else {
+    updateResponse("{$_POST['command']} is not a valid command");
+  }
+}
