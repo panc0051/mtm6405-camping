@@ -77,8 +77,9 @@ function help()
  * - response array
  * - marshmallows: number of marshmallows
  * - wood: number 
- * - fire: boolean
- * - tent: boolean
+ * - fire: boolean(if true then fire is on, if false then fire is off)
+ * - tent: boolean(if true then tent is set up, if false then tent is not set up)
+ * returns boolean based on if the session was created or not
  */
 function createGameData()
 {
@@ -89,19 +90,37 @@ function createGameData()
     'fire' => false,
     'tent' => false
   ];
+  return isset($_SESSION['camping']);
 }
 
-return isset($_SESSION['camping']);
 
 /**
  * tent
- *
+ *set the tent property to true
  */
+function tent()
+{
+  $_SESSION['camping']['tent'] = true;
 
+  return updateResponse("You have a tent");
+}
 /**
  * wood
- * 
+ * if the fire is not going
+ * then increase the wood property by 1
+
  */
+function wood()
+{
+  if ($_SESSION['camping']['fire'] == false) {
+    $_SESSION['camping']['wood']++;
+    return updateResponse("You have " . $_SESSION['camping']['wood'] . " wood");
+  }
+
+
+  return "You can't have wood while the fire is on";
+}
+
 
 /**
  * fire

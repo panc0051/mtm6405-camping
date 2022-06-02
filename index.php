@@ -1,4 +1,4 @@
-<?php require_once "camping.php"; ?>
+<?php require "camping.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
