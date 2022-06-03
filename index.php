@@ -20,7 +20,7 @@
     <?php endif; ?>
   </div>
 
-  <form method="post">
+  <form method="POST">
     <input type="text" name="command" class="command" autofocus>
   </form>
   <a class="clear" href="?clear">Clear Session</a>

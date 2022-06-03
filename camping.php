@@ -102,7 +102,7 @@ function tent()
 {
   $_SESSION['camping']['tent'] = true;
 
-  return updateResponse("You have a tent");
+  return updateResponse("You have a tent set up");
 }
 /**
  * wood
@@ -114,7 +114,7 @@ function wood()
 {
   if ($_SESSION['camping']['fire'] == false) {
     $_SESSION['camping']['wood']++;
-    return updateResponse("You have " . $_SESSION['camping']['wood'] . " wood");
+    return "A piece of wood has been added to your inventory";
   }
 
 
@@ -124,26 +124,77 @@ function wood()
 
 /**
  * fire
- * 
+ * if fire is true, will set fire to false
+ * if fire is false and if wood is greater than 0
+ * wood will decrease by 1
+ * fire is set to true
  */
+function fire()
+{
+  if ($_SESSION['camping']['fire']) {
+    $_SESSION['camping']['fire'] = false;
+    return "The fire has been put out";
+  } else if ($_SESSION['camping']['wood'] > 0) {
+    $_SESSION['camping']['wood']--;
+    $_SESSION['camping']['fire'] = true;
+    return "You have started a fire";
+  } else {
+    return "You don't have any wood to start a fire";
+  }
+}
 
 /**
  * roast
- * 
+ * if fire is true and if marshmallows is > 0
+ * marshmallows will decrease by 1
  */
+function roast()
+{
+  if ($_SESSION['camping']['fire']) {
+    if ($_SESSION['camping']['marshmallows'] > 0) {
+      $_SESSION['camping']['marshmallows']--;
+      return "You have roasted a marshmallow";
+    } else {
+      return "You don't have any marshmallows to roast";
+    }
+  } else {
+    return "You can't roast marshmallows without a fire";
+  }
+}
+
 
 /**
  * rest
- * 
+ * if fire is false and tent is true
+ * return response "going to sleep for 8 hours"
+ */
+function rest()
+{
+  if ($_SESSION['camping']['fire'] === false) {
+    if ($_SESSION['camping']['tent']) {
+      return "Good Night ";
+    } else {
+      return "You can't rest without a tent";
+    }
+  } else {
+    return "You can't rest without a fire";
+  }
+}
+
+
+/** 
+ * Check for POST commands
+
  */
 
 
 
 if (isset($_POST['command'])) {
   if (function_exists($_POST['command'])) {
-    //Execute the function AND update the response
+    //Execute  and return response
     updateResponse($_POST['command']());
   } else {
-    updateResponse("{$_POST['command']} is not a valid command");
+    //Return help
+    updateResponse('{$_POST["command"]} is not a valid command');
   }
 }
